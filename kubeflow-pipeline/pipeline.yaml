@@ -1,0 +1,24 @@
+
+
+
+components:
+  download_data:
+    py_path: /workspace/kubeflow-pipeline/download_data.py
+  train_model:
+    py_path: /workspace/kubeflow-pipeline/train_model.py
+
+pipeline:
+  name: Demand Forecasting Pipeline
+  description: A pipeline that downloads demand data and trains a forecasting model
+  tasks:
+    download_data_task:
+      component: download_data
+      args:
+        url: https://github.com/RHRolun/simple-training-pipeline/raw/refs/heads/main/data/demand_qty_item_loc.xlsx
+        output_path: /data/demand_data.xlsx
+    train_model_task:
+      component: train_model
+      args:
+        data_path: {download_data_task.output}
+        model_path: /models/demand_forecasting_model.csv
+
